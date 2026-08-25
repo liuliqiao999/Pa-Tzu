@@ -93,13 +93,7 @@ def ten_god(day_stem, target_stem):
     return None
 
 ########## 天干五合 ##########
-# 天干五合：
-# 甲己合土
-# 乙庚合金
-# 丙辛合水
-# 丁壬合木
-# 戊癸合火
-#
+# 天干五合：甲己合土,乙庚合金,丙辛合水,丁壬合木,戊癸合火
 # 天干順序：甲 乙 丙 丁 戊 己 庚 辛 壬 癸
 # 表示兩個天干相合
 def stem_five_relation(stem_a, stem_b):
@@ -205,17 +199,25 @@ def branch_three_combine_element(branch_a, branch_b, branch_c):
     else:
         return "木"
 
+# 根據單個地支返回其所屬三合局的五行
+# 申子辰 -> 水 巳酉丑 -> 金 寅午戌 -> 火 亥卯未 -> 木
+def branch_three_combine_group_element(branch):
+    index = constant.twelve_branches.index(branch)
+    if index % 4 == 0:
+        return "水"
+    elif index % 4 == 1:
+        return "金"
+    elif index % 4 == 2:
+        return "火"
+    else:
+        return "木"
+
 ########## 地支三會 ##########
 # 地支三會：
-# 寅卯辰會木
-# 巳午未會火
-# 申酉戌會金
-# 亥子丑會水
-#
+# 寅卯辰會木, 巳午未會火, 申酉戌會金, 亥子丑會水
 # 子 丑 寅 卯 辰 巳 午 未 申 酉 戌 亥
 #
-# 因此三個地支必須互不相同，
-# 並且能在十二地支循環中排列成連續三個位置。
+# 因此三個地支必須互不相同，並且能在十二地支循環中排列成連續三個位置。
 def branch_three_meeting_relation(branch_a, branch_b, branch_c):
     if len({branch_a, branch_b, branch_c}) != 3:
         return False
@@ -246,38 +248,14 @@ def branch_three_meeting_element(branch_a, branch_b, branch_c):
         return "水"
 
 ########## 地支六害 ##########
-# 地支六害：
-# 子未相害
-# 丑午相害
-# 寅巳相害
-# 卯辰相害
-# 申亥相害
-# 酉戌相害
-#
-# 子 丑 寅 卯 辰 巳 午 未 申 酉 戌 亥
-# 0  1  2  3  4  5  6  7  8  9  10 11
-# 六害的 index 之和：
-# 子未：0 + 7  = 7
-# 丑午：1 + 6  = 7
-# 寅巳：2 + 5  = 7
-# 卯辰：3 + 4  = 7
-# 申亥：8 + 11 = 19
-# 酉戌：9 + 10 = 19
-# 19 % 12 = 7，
-
+# 地支六害：子未相害,丑午相害,寅巳相害,卯辰相害,申亥相害,酉戌相害
 def branch_six_harm_relation(branch_a, branch_b):
     index_a = constant.twelve_branches.index(branch_a)
     index_b = constant.twelve_branches.index(branch_b)
     return (index_a + index_b) % 12 == 7
 
 ########## 地支六破 ##########
-# 地支六破：
-# 子酉相破
-# 丑辰相破
-# 寅亥相破
-# 卯午相破
-# 巳申相破
-# 未戌相破
+# 地支六破：子酉相破,丑辰相破,寅亥相破,卯午相破,巳申相破,未戌相破
 def branch_six_break_relation(branch_a, branch_b):
     break_pairs = [{"子", "酉"}, {"丑", "辰"}, {"寅", "亥"}, {"卯", "午"}, {"巳", "申"}, {"未", "戌"}]
     return {branch_a, branch_b} in break_pairs
