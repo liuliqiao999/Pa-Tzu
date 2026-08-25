@@ -125,7 +125,7 @@ def stem_five_element(stem_a, stem_b):
 # 巳亥相沖
 #
 # 子 丑 寅 卯 辰 巳 午 未 申 酉 戌 亥
-# 相沖的兩個地支在十二地支循環中相距 6 位，
+# 相沖的兩個地支在十二地支循環中相距 6 位
 def branch_six_clash_relation(branch_a, branch_b):
     index_a = constant.twelve_branches.index(branch_a)
     index_b = constant.twelve_branches.index(branch_b)
@@ -166,12 +166,9 @@ def branch_six_combine_element(branch_a, branch_b):
 # 巳酉丑合金
 # 沒有土
 #
-# 十二地支順序：
-# 子 丑 寅 卯 辰 巳 午 未 申 酉 戌 亥
-#
+# 十二地支順序：子 丑 寅 卯 辰 巳 午 未 申 酉 戌 亥
 # 每一组三合中的三個地支，在十二地支循環中位置相差 4
-# 完整三合需要三個不同的地支全部出現
-# 只有其中兩個時屬於三合中的兩支，不等於完整三合
+# 完整三合需要三個不同的地支全部出現，只有其中兩個時屬於三合中的兩支，不等於完整三合
 def branch_three_combine_relation(branch_a, branch_b, branch_c):
     if len({branch_a, branch_b, branch_c}) != 3:
         return False
@@ -213,11 +210,9 @@ def branch_three_combine_group_element(branch):
         return "木"
 
 ########## 地支三會 ##########
-# 地支三會：
-# 寅卯辰會木, 巳午未會火, 申酉戌會金, 亥子丑會水
+# 地支三會：寅卯辰會木, 巳午未會火, 申酉戌會金, 亥子丑會水
 # 子 丑 寅 卯 辰 巳 午 未 申 酉 戌 亥
-#
-# 因此三個地支必須互不相同，並且能在十二地支循環中排列成連續三個位置。
+# 三個地支必須互不相同，並且能在十二地支循環中排列成連續三個位置。
 def branch_three_meeting_relation(branch_a, branch_b, branch_c):
     if len({branch_a, branch_b, branch_c}) != 3:
         return False
