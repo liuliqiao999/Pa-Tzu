@@ -106,34 +106,3 @@ def missing_ten_gods(four_pillars):
             missing_gods.append(constant.ten_gods[i])
     return missing_gods
 
-#測試
-if __name__ == "__main__":
-    x_pillars = {
-        "year":  ("癸", "未"),
-        "month": ("乙", "丑"),
-        "day":   ("庚", "寅"),
-        "hour":  ("壬", "午"),
-    }
-
-    counts = ten_god_counts(x_pillars)
-    strengths = ten_god_strength(x_pillars)
-
-    print("十神出現次數：")
-    for god, count in zip(constant.ten_gods, counts):
-        print(f"{god}: {count}")
-
-    print("\n十神力量：")
-    for god, strength in zip(constant.ten_gods, strengths):
-        print(f"{god}: {strength}")
-
-    print("\n十神組別力量：")
-    for group, strength in zip(constant.ten_god_groups, ten_god_groups_strength(x_pillars)):
-        print(f"{group}: {strength}")
-
-    print("\n最強十神：")
-    for god in strongest_ten_gods(x_pillars):
-        print(f"{god}")
-
-    print("\n最強十神組別：")
-    for group in strongest_ten_god_group(x_pillars):
-        print(f"{group}")
