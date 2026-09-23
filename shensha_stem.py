@@ -21,16 +21,15 @@ def Lok_San(reference_stem):
     index = constant.ten_stems.index(reference_stem)
     element = constant.stems_elements(reference_stem)
     if element == "木":
-        return constant.twelve_branches[(index + 2) % 12]  # 甲->寅，乙->卯
+        return [constant.twelve_branches[(index + 2) % 12]]  # 甲->寅，乙->卯
     elif element == "火":
-        return constant.twelve_branches[(index + 3) % 12]  # 丙->巳，丁->午
+        return [constant.twelve_branches[(index + 3) % 12]]  # 丙->巳，丁->午
     elif element == "土":
-        return constant.twelve_branches[(index + 1) % 12]  # 戊->巳，己->午
+        return [constant.twelve_branches[(index + 1) % 12]]  # 戊->巳，己->午
     elif element == "金":
-        return constant.twelve_branches[(index + 2) % 12]  # 庚->申，辛->酉
+        return [constant.twelve_branches[(index + 2) % 12]]  # 庚->申，辛->酉
     elif element == "水":
-        return constant.twelve_branches[(index + 3) % 12]  # 壬->亥，癸->子
-    return None
+        return [constant.twelve_branches[(index + 3) % 12]]  # 壬->亥，癸->子
 
 ########## 羊刃 ##########
 # 羊刃以天干為基準：
@@ -45,12 +44,12 @@ def Lok_San(reference_stem):
 # 壬 -> 子
 # 癸 -> 亥
 def Yeung_Jan(reference_stem):
-    luck_branch = Lok_San(reference_stem)
+    luck_branch = Lok_San(reference_stem)[0]
     index = constant.twelve_branches.index(luck_branch)
     if constant.stem_YamYeung(reference_stem) == 1:
-        return constant.twelve_branches[(index + 1) % 12]  # 陽干：祿神後一位
+        return [constant.twelve_branches[(index + 1) % 12]]  # 陽干：祿神後一位
     else:
-        return constant.twelve_branches[(index - 1) % 12]  # 陰干：祿神前一位
+        return [constant.twelve_branches[(index - 1) % 12]]  # 陰干：祿神前一位
 
 ########## 天乙貴人 ##########
 # 天乙貴人以天干為基準：（返回兩個地支）
@@ -70,7 +69,6 @@ def Tin_Yuet(reference_stem):
         return ["午", "寅"]
     elif reference_stem in ["壬", "癸"]:
         return ["卯", "巳"]
-    return None
 
 ########## 文昌貴人 ##########
 # 文昌貴人以天干為基準：
@@ -88,16 +86,15 @@ def Man_Cheung(reference_stem):
     index = constant.ten_stems.index(reference_stem)
     element = constant.stems_elements(reference_stem)
     if element == "木":
-        return constant.twelve_branches[(index + 5) % 12]  # 甲->巳，乙->午
+        return [constant.twelve_branches[(index + 5) % 12]]  # 甲->巳，乙->午
     elif element == "火":
-        return constant.twelve_branches[(index + 6) % 12]  # 丙->申，丁->酉
+        return [constant.twelve_branches[(index + 6) % 12]]  # 丙->申，丁->酉
     elif element == "土":
-        return constant.twelve_branches[(index + 4) % 12]  # 戊->申，己->酉
+        return [constant.twelve_branches[(index + 4) % 12]]  # 戊->申，己->酉
     elif element == "金":
-        return constant.twelve_branches[(index + 5) % 12]  # 庚->亥，辛->子
+        return [constant.twelve_branches[(index + 5) % 12]]  # 庚->亥，辛->子
     elif element == "水":
-        return constant.twelve_branches[(index + 6) % 12]  # 壬->寅，癸->卯
-    return None
+        return [constant.twelve_branches[(index + 6) % 12]]  # 壬->寅，癸->卯
 
 ########## 金輿 ##########
 # 金輿以天干為基準：
@@ -110,7 +107,7 @@ def Gam_Jyu(reference_stem):
         "庚": "戌", "辛": "亥",
         "壬": "丑", "癸": "寅"
     }
-    return gam_jyu.get(reference_stem)
+    return [gam_jyu[reference_stem]]
 
 
 ########## 學堂 ##########
@@ -119,16 +116,15 @@ def Gam_Jyu(reference_stem):
 def Hok_Tong(reference_stem):
     element = constant.stems_elements(reference_stem)
     if element == "木":
-        return "亥"
+        return ["亥"]
     elif element == "火":
-        return "寅"
+        return ["寅"]
     elif element == "土":
-        return "申"
+        return ["申"]
     elif element == "金":
-        return "巳"
+        return ["巳"]
     elif element == "水":
-        return "申"
-    return None
+        return ["申"]
 
 ########## 詞館 ##########
 # 詞館以天干五行為基準：
@@ -136,16 +132,15 @@ def Hok_Tong(reference_stem):
 def Ci_Gun(reference_stem):
     element = constant.stems_elements(reference_stem)
     if element == "木":
-        return "寅"
+        return ["寅"]
     elif element == "火":
-        return "巳"
+        return ["巳"]
     elif element == "土":
-        return "亥"
+        return ["亥"]
     elif element == "金":
-        return "申"
+        return ["申"]
     elif element == "水":
-        return "亥"
-    return None
+        return ["亥"]
 
 ########## 太極貴人 ##########
 # 甲乙 -> 子, 午
@@ -165,15 +160,14 @@ def Taai_Gik(reference_stem):
         return ["寅", "亥"]
     elif reference_stem in ["壬", "癸"]:
         return ["巳", "申"]
-    return None
 
 ########## 國印貴人 ##########
 # 國印位於祿神地支往後 4 位：
 # 國印index = (祿神index - 4) % 12
 def Gwok_Yan(reference_stem):
-    lu_branch = Lok_San(reference_stem)
+    lu_branch = Lok_San(reference_stem)[0]
     index = constant.twelve_branches.index(lu_branch)
-    return constant.twelve_branches[(index - 4) % 12]
+    return [constant.twelve_branches[(index - 4) % 12]]
 
 ########## 福星貴人 ##########
 # 甲丙 -> 寅子 乙癸 -> 卯丑 戊->申 己->未 丁->亥 庚->午 辛->巳 壬->辰
@@ -190,7 +184,7 @@ def Fuk_Sing(reference_stem):
         "壬": ["辰"],
         "癸": ["卯", "丑"]
     }
-    return fuk_sing.get(reference_stem)
+    return fuk_sing[reference_stem]
 
 ########## 天廚貴人 ##########
 # 天廚 = 食神之祿
@@ -198,4 +192,5 @@ def Fuk_Sing(reference_stem):
 def Tin_Cyu(reference_stem):
     index = constant.ten_stems.index(reference_stem)
     food_god_stem = constant.ten_stems[(index + 2) % 10]
-    return Lok_San(food_god_stem)
+    return Lok_San(food_god_stem)  # 返回食神的祿神地支
+
