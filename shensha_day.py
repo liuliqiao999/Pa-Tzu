@@ -8,34 +8,20 @@ import rules
 # 魁罡日：庚辰, 庚戌, 壬辰, 戊戌
 def Fui_Gong(day_stem, day_branch):
     day_pillar = day_stem + day_branch
-    return day_pillar in [
-        "庚辰",
-        "庚戌",
-        "壬辰",
-        "戊戌"
-    ]
+    return day_pillar in ["庚辰", "庚戌", "壬辰", "戊戌"]
 
 
 ########## 陰差陽錯 ##########
 # 陰差陽錯日：丙子, 丁丑, 戊寅, 辛卯, 壬辰, 癸巳, 丙午, 丁未, 戊申, 辛酉, 壬戌, 癸亥
 def Yam_Caa_Yeung_Co(day_stem, day_branch):
     day_pillar = day_stem + day_branch
-    return day_pillar in [
-        "丙子", "丁丑", "戊寅",
-        "辛卯", "壬辰", "癸巳",
-        "丙午", "丁未", "戊申",
-        "辛酉", "壬戌", "癸亥"
-    ]
-
+    return day_pillar in ["丙子", "丁丑", "戊寅", "辛卯", "壬辰", "癸巳", "丙午", "丁未", "戊申", "辛酉", "壬戌", "癸亥"]
 
 ########## 十惡大敗 ##########
 # 十惡大敗日：甲辰, 乙巳, 丙申, 丁亥, 戊戌, 己丑, 庚辰, 辛巳, 壬申, 癸亥
 def Sap_Ok_Daai_Baai(day_stem, day_branch):
     day_pillar = day_stem + day_branch
-    return day_pillar in [
-        "甲辰", "乙巳", "丙申", "丁亥", "戊戌",
-        "己丑", "庚辰", "辛巳", "壬申", "癸亥"
-    ]
+    return day_pillar in ["甲辰", "乙巳", "丙申", "丁亥", "戊戌", "己丑", "庚辰", "辛巳", "壬申", "癸亥"]
 
 ########## 空亡（旬空） ##########
 # 空亡以完整日柱為基準。
@@ -57,10 +43,7 @@ def Hung_Mong(day_stem, day_branch):
     xun_start = (branch_index - stem_index) % 12
     void_1 = (xun_start - 2) % 12
     void_2 = (xun_start - 1) % 12
-    return [
-        constant.twelve_branches[void_1],
-        constant.twelve_branches[void_2]
-    ]
+    return [constant.twelve_branches[void_1], constant.twelve_branches[void_2]]
 
 ########## 孤鸞 ##########
 # 孤鸞日：甲寅、乙巳、丙午、丁巳、戊午、戊申、辛亥、壬子
@@ -68,22 +51,18 @@ def Hung_Mong(day_stem, day_branch):
 # 此處採用以上八日版本。
 def Gu_Luen(day_stem, day_branch):
     day_pillar = day_stem + day_branch
-    return day_pillar in ["甲寅", "乙巳", "丙午", "丁巳",
-        "戊午", "戊申", "辛亥", "壬子"]
+    return day_pillar in ["甲寅", "乙巳", "丙午", "丁巳", "戊午", "戊申", "辛亥", "壬子"]
 
 
 ########## 八專 ##########
 # 八專日：甲寅、乙卯、丁未、己未、庚申、辛酉、戊戌、癸丑
 def Baat_Zyun(day_stem, day_branch):
     day_pillar = day_stem + day_branch
-    return day_pillar in [
-        "甲寅", "乙卯", "丁未", "己未",
-        "庚申", "辛酉", "戊戌", "癸丑"]
+    return day_pillar in [ "甲寅", "乙卯", "丁未", "己未", "庚申", "辛酉", "戊戌", "癸丑"]
 
 
 ########## 九醜 ##########
 # 九醜日：壬子, 壬午, 戊子, 戊午, 己酉, 己卯, 乙卯, 辛酉, 辛卯
 def Gau_Cau(day_stem, day_branch):
     day_pillar = day_stem + day_branch
-    return day_pillar in ["壬子", "壬午", "戊子", "戊午",
-        "己酉", "己卯", "乙卯", "辛酉", "辛卯"]
+    return day_pillar in ["壬子", "壬午", "戊子", "戊午", "己酉", "己卯", "乙卯", "辛酉", "辛卯"]
