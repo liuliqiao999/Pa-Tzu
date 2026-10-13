@@ -275,3 +275,21 @@ def branch_punishment(branches):
         if branches.count(branch) >= 2:
             punishments.append(branch + "自刑")
     return punishments
+
+
+# 地支半合
+def branch_half_combine_relation(branch_a, branch_b):
+    groups = [("申", "子", "辰"), ("亥", "卯", "未"), ("寅", "午", "戌"),("巳", "酉", "丑")] # 地支三合
+    for a, b, c in groups:
+        if set([branch_a, branch_b]) in [{a, b}, {b, c}]:
+            return True
+    return False
+
+
+# 地支半會
+def branch_half_meeting_relation(branch_a, branch_b):
+    groups = [("寅", "卯", "辰"), ("巳", "午", "未"), ("申", "酉", "戌"), ("亥", "子", "丑")] #地支三會
+    for a, b, c in groups:
+        if set([branch_a, branch_b]) in [{a, b}, {b, c}]:
+            return True
+    return False
