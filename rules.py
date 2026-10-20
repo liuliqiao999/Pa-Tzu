@@ -220,11 +220,7 @@ def branch_three_meeting_relation(branch_a, branch_b, branch_c):
     index_b = constant.twelve_branches.index(branch_b)
     index_c = constant.twelve_branches.index(branch_c)
     indices = sorted([index_a, index_b, index_c])
-    # 亥子丑：11, 0, 1
-    if indices == [0, 1, 11]:
-        return True
-    #三會的三個地支在十二地支循環中連續排列，因此排序後相鄰的兩個索引差為1
-    return (indices[1] - indices[0] == 1) and (indices[2] - indices[1] == 1) 
+    return indices in [[2, 3, 4],[5, 6, 7],[8, 9, 10],[0, 1, 11]]
 
 def branch_three_meeting_element(branch_a, branch_b, branch_c):
     if not branch_three_meeting_relation(branch_a, branch_b, branch_c):
