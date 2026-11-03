@@ -234,15 +234,3 @@ def annual_basic_analysis(four_pillars, solar_date):
         "流年神煞": annual_shensha_summary(four_pillars, solar_date)
     }
 
-import datetime
-import pprint
-
-x_pillars = {
-    "year": ("癸", "未"),
-    "month": ("乙", "丑"),
-    "day": ("庚", "寅"),
-    "hour": ("壬", "午")
-}
-test_date = datetime.date(2026, 6, 1)
-result = annual_basic_analysis(x_pillars, test_date)
-pprint.pp(result, sort_dicts=False)
