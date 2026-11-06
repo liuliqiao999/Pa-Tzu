@@ -42,8 +42,7 @@ def get_month_branch(solar_date):
 # 丙、辛年 -> 庚寅起
 # 丁、壬年 -> 壬寅起
 # 戊、癸年 -> 甲寅起
-# 月支從寅開始依次為：
-# 寅=0, 卯=1, 辰=2, ..., 丑=11
+# 月支從寅開始依次為：寅=0, 卯=1, 辰=2, ..., 丑=11
 def month_stem(year_stem, month_branch):
     month_offset = (constant.twelve_branches.index(month_branch) - 2) % 12
     a = constant.ten_stems.index(year_stem)
@@ -98,14 +97,11 @@ def get_hour_branch(birth_time):
     return constant.twelve_branches[index]
 
 
-# 根據是否採用「子時換日」規則，
-# 決定計算日干時實際使用的日期
+# 根據是否採用「子時換日」規則，決定計算日干時實際使用的日期
 # zi_hour_change = True
-#   採用子時換日：
-#   23:00 起視為翌日
+#   採用子時換日：23:00 起視為翌日
 # zi_hour_change = False
-#   不採用子時換日：
-#   日期於 00:00 正常切換
+#   不採用子時換日：日期於 00:00 正常切換
 def get_effective_date(birth_date, birth_time, zi_hour_change = True):
     if zi_hour_change and birth_time.hour == 23:
         return birth_date + datetime.timedelta(days=1)
@@ -120,10 +116,8 @@ def get_effective_date(birth_date, birth_time, zi_hour_change = True):
 # 丙、辛日 -> 戊子起
 # 丁、壬日 -> 庚子起
 # 戊、癸日 -> 壬子起
-# 將十天干以 0-9 編號：
-# 甲=0, 乙=1, 丙=2, ..., 癸=9
-# 時支由子開始依次為：
-# 子=0, 丑=1, 寅=2, ..., 亥=11
+# 將十天干以 0-9 編號：甲=0, 乙=1, 丙=2, ..., 癸=9
+# 時支由子開始依次為：子=0, 丑=1, 寅=2, ..., 亥=11
 def hour_stem(day_stem, hour_branch):
     a = constant.ten_stems.index(day_stem)
     hour_offset = constant.twelve_branches.index(hour_branch)
@@ -147,4 +141,35 @@ def get_four_pillars(birth_date, birth_time, zi_hour_change = True):
             "month": get_month_gz(birth_date), 
             "day": get_day_gz(get_effective_date(birth_date, birth_time,zi_hour_change)),
             "hour": get_hour_gz(birth_date, birth_time, zi_hour_change)}
+
+# 二十四節氣（按 sxtwl 索引排列）solar_terms = [constant.solar_terms[(i + 9) % 24]for i in range(24)]
+
+# 十二中氣（按 sxtwl 索引順序）
+qi_terms = [constant.solar_terms[(2 * i + 9) % 24]for i in range(12)]
+
+# 十二節（按 sxtwl 索引順序）
+jie_terms = [constant.solar_terms[(2 * i + 10) % 24]for i in range(12)]
+
+
+# 尋找指定時間之前或之後最近的節氣
+def get_nearest_solar_term(target_datetime, direction, terms): # terms：jie_terms、qi_terms 或 constant.solar_terms
+    if direction not in (1, -1):
+        raise ValueError()
+    current_date = target_datetime.date()
+    while True:
+        day = sxtwl.fromSolar(current_date.year, current_date.month, current_date.day)
+        if day.hasJieQi():
+            index = day.getJieQi()
+            term_name = constant.solar_terms[(index + 9) % 24]
+            if term_name in terms:
+                jd = day.getJieQiJD()
+                time = sxtwl.JD2DD(jd)
+                # 將儒略日轉換成 datetime
+                term_datetime = datetime.datetime(time.Y,time.M,time.D) + datetime.timedelta(hours=time.h,minutes=time.m,seconds=time.s)
+                # 確認節氣位於指定方向
+                difference = (term_datetime - target_datetime).total_seconds()
+                if difference * direction >= 0:
+                    return (term_name, term_datetime)
+        current_date += datetime.timedelta(days = direction)
+
 
