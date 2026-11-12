@@ -160,7 +160,7 @@ def get_nearest_solar_term(target_datetime, direction, terms): # terms：jie_ter
         day = sxtwl.fromSolar(current_date.year, current_date.month, current_date.day)
         if day.hasJieQi():
             index = day.getJieQi()
-            term_name = constant.solar_terms[(index + 9) % 24]
+            term_name = constant.solar_terms[(index + 21) % 24]
             if term_name in terms:
                 jd = day.getJieQiJD()
                 time = sxtwl.JD2DD(jd)
@@ -172,4 +172,8 @@ def get_nearest_solar_term(target_datetime, direction, terms): # terms：jie_ter
                     return (term_name, term_datetime)
         current_date += datetime.timedelta(days = direction)
 
-
+# 取得指定年份的立春時間
+def get_lichun_datetime(year):
+    target_datetime = datetime.datetime(year, 1, 1)
+    term_name, term_datetime = get_nearest_solar_term(target_datetime, 1, ["立春"])
+    return term_datetime
