@@ -1,5 +1,5 @@
 import constant
-import calendar
+import pa_tzu_calendar
 import datetime
 import rules
 from itertools import combinations
@@ -23,7 +23,7 @@ def luck_direction(year_stem, gender):
 
 # 起運歲數，三日一歲
 def luck_start_age(birth_datetime, direction):
-    jie_term = calendar.get_nearest_solar_term(birth_datetime, direction, calendar.jie_terms)
+    jie_term = pa_tzu_calendar.get_nearest_solar_term(birth_datetime, direction, pa_tzu_calendar.jie_terms)
     term_datetime = jie_term[1]
     difference = abs(term_datetime - birth_datetime)
     age = difference.total_seconds() / (3 * 24 * 3600)

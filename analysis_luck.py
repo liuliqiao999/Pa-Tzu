@@ -20,7 +20,7 @@ def luck_branch_element_relation(four_pillars, luck_pillar):
 def luck_stem_favourability(four_pillars, luck_pillar):
     relation = luck_stem_element_relation(four_pillars, luck_pillar)
     favourable = analysis_five_elements.favourable_relations(four_pillars)
-    if not favourable:
+    if favourable is None or favourable == []:
         return None
     action = constant.five_element_actions[relation + 2]
     return action in favourable
@@ -29,7 +29,7 @@ def luck_stem_favourability(four_pillars, luck_pillar):
 def luck_branch_favourability(four_pillars, luck_pillar):
     relation = luck_branch_element_relation(four_pillars, luck_pillar)
     favourable = analysis_five_elements.favourable_relations(four_pillars)
-    if not favourable:
+    if favourable is None or favourable == []:
         return None
     action = constant.five_element_actions[relation + 2]
     return action in favourable
@@ -44,7 +44,7 @@ def luck_hidden_stems_favourability(four_pillars, luck_pillar):
     for stem in hidden_stems:
             relation = rules.stem_element_relation(day_stem, stem)
             action = constant.five_element_actions[relation + 2]
-            if not favourable:
+            if favourable is None or favourable == []:
                 results.append(None)
             else:
                 results.append(action in favourable)
@@ -113,8 +113,8 @@ def luck_three_combine_favourability(four_pillars, luck_pillar):
     if not three_combine_elements:
         return []
     favourable = analysis_five_elements.favourable_relations(four_pillars)
-    if not favourable:
-        return [None] 
+    if favourable is None or favourable == []:
+        return [None] * len(three_combine_elements) 
     day_stem = four_pillars["day"][0]
     day_element = constant.stems_elements(day_stem)
     results = []
@@ -130,8 +130,8 @@ def luck_three_meeting_favourability(four_pillars, luck_pillar):
     if not three_meeting_elements:
         return []
     favourable = analysis_five_elements.favourable_relations(four_pillars)
-    if not favourable:
-        return [None]
+    if favourable is None or favourable == []:
+        return [None] * len(three_meeting_elements)
     day_stem = four_pillars["day"][0]
     day_element = constant.stems_elements(day_stem)
     results = []
@@ -171,8 +171,8 @@ def luck_stem_five_favourability(four_pillars, luck_pillar):
     if not five_element:
         return []
     favourable = analysis_five_elements.favourable_relations(four_pillars)
-    if not favourable:
-        return [None]
+    if favourable is None or favourable == []:
+        return [None] * len(five_element)
     day_stem = four_pillars["day"][0]
     day_element = constant.stems_elements(day_stem)
     results = []
@@ -188,7 +188,7 @@ def luck_branch_six_combine_favourability(four_pillars, luck_pillar):
     if not six_combine_elements:
         return []
     favourable = analysis_five_elements.favourable_relations(four_pillars)
-    if not favourable:
+    if favourable is None or favourable == []:
         return [None] * len(six_combine_elements)
     day_stem = four_pillars["day"][0]
     day_element = constant.stems_elements(day_stem)

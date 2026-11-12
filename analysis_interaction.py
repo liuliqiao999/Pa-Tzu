@@ -88,7 +88,7 @@ def element_favourability(four_pillars, element):
     if element is None:
         return None
     favourable = analysis_five_elements.favourable_relations(four_pillars)
-    if not favourable:
+    if favourable is None or favourable == []:
         return None
     day_element = constant.stems_elements(four_pillars["day"][0])
     relation = rules.element_relation(day_element, element)

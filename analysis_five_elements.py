@@ -306,8 +306,11 @@ def weak_following_type(four_pillars):
     string_type = ["從官殺", "從兒", "從財"]
     total = sum(strengths[i] for i in indexes)
     maximum = max(strengths[i] for i in indexes)
-    # 防止三種力量全部為 0，同時要求主勢至少佔一半
-    if total == 0 or maximum / total < 0.5:
+    # 三種力量全部為 0，無法判定從弱類型
+    if total == 0:
+        return None
+    # 主勢不足 50%，無法確定具體從格類型
+    if maximum / total < 0.5:
         return []
     for i in range(len(string_type)):
         if strengths[indexes[i]] == maximum:
@@ -347,10 +350,11 @@ def special_structure(four_pillars):
         return ["從強"]
     if weak_following_structure(four_pillars):
         weak_type = weak_following_type(four_pillars)
+        if weak_type is None:
+            return None
         if weak_type:
             return weak_type
-        return ["從弱"]  # 有從弱條件，但無明確單一主勢
-    return None
+    return ["從弱"]
 
 ########## 喜忌判斷 ##########
 #普通身強  -> 喜洩、耗、剋 （偏強，極強）
