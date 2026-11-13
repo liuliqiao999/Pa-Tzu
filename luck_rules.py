@@ -191,6 +191,7 @@ def luck_branch_three_meeting(four_pillars, luck_pillar):
     return results
 
 # 大運地支相刑
+
 def luck_branch_punishment(four_pillars, luck_pillar):
     luck_branch = luck_pillar[1]
     original_branches = [four_pillars[pillar][1] for pillar in pillars]
@@ -199,9 +200,14 @@ def luck_branch_punishment(four_pillars, luck_pillar):
     luck_punishments = rules.branch_punishment(luck_branches)
     results = []
     for punishment in luck_punishments:
-            if punishment not in original_punishments:
-                results.append(punishment)
+        if punishment not in original_punishments:
+            results.append(punishment)
+    if luck_branch in ["辰", "午", "酉", "亥"]:
+        if original_branches.count(luck_branch) >= 2:
+            if luck_branch + "自刑" not in results:
+                results.append(luck_branch + "自刑")
     return results
+
 
 # 大運地支半合
 def luck_branch_half_combine(four_pillars, luck_pillar):

@@ -1,4 +1,4 @@
-import calendar
+import pa_tzu_calendar
 import rules
 import constant
 from itertools import combinations
@@ -13,7 +13,7 @@ pillars = ["year", "month", "day", "hour"]
 
 ## 流年
 def annual_pillar(solar_date):
-    return calendar.get_year_gz(solar_date) ## 得到流年的天干地支
+    return pa_tzu_calendar.get_year_gz(solar_date) ## 得到流年的天干地支
 
 def annual_stem_ten_god(four_pillars, solar_date):
     day_stem = four_pillars["day"][0]
@@ -100,8 +100,11 @@ def annual_branch_punishment(four_pillars, solar_date):
     for punishment in annual_punishments:
         if punishment not in original_punishments:
             results.append(punishment)
+    if annual_branch in ["辰", "午", "酉", "亥"]:
+        if original_branches.count(annual_branch) >= 2:
+            if annual_branch + "自刑" not in results:
+                results.append(annual_branch + "自刑")
     return results
-
 
 # 流年地支半合
 def annual_branch_half_combine(four_pillars, solar_date):
