@@ -1,4 +1,3 @@
-import constant
 import rules
 from itertools import combinations
 
@@ -95,4 +94,5 @@ def analyse_branch_punishments(four_pillars):
         related_pillars.append(punishment)
         results.append(tuple(related_pillars))
     return results
+
 
