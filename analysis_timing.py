@@ -3,7 +3,7 @@ import analysis_luck
 import analysis_annual
 import analysis_interaction
 import luck_rules
-import calendar
+import pa_tzu_calendar
 import datetime
 
 
@@ -26,13 +26,13 @@ def timing_auto_analysis(four_pillars, birth_datetime, gender, target_date):
 
 # 完整流年分析（以立春及交運日期分段）
 def timing_yearly_analysis(four_pillars, birth_datetime, gender, year):
-    start = calendar.get_lichun_datetime(year)
-    end = calendar.get_lichun_datetime(year + 1)
+    start = pa_tzu_calendar.get_lichun_datetime(year)
+    end = pa_tzu_calendar.get_lichun_datetime(year + 1)
     cycles = luck_rules.get_luck_cycles(four_pillars, birth_datetime, gender, 12)
     # 計算各步大運的開始日期
     first_start = luck_rules.luck_start_date(birth_datetime, cycles[0]["start_age"])
     change_dates = []
-    for i in range(12):
+    for i in range(len(cycles) + 1):
         change_year = first_start.year + 10 * i
         try:
             change_date = first_start.replace(year=change_year)

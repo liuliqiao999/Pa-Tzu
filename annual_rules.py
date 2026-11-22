@@ -93,17 +93,12 @@ def annual_branch_three_meeting(four_pillars, solar_date): ##地支三會，原�
 def annual_branch_punishment(four_pillars, solar_date):
     annual_branch = annual_pillar(solar_date)[1]
     original_branches = [four_pillars[pillar][1] for pillar in pillars]
-    original_punishments = rules.branch_punishment(original_branches)
     annual_branches = original_branches + [annual_branch]
     annual_punishments = rules.branch_punishment(annual_branches)
     results = []
     for punishment in annual_punishments:
-        if punishment not in original_punishments:
+        if annual_branch in punishment:
             results.append(punishment)
-    if annual_branch in ["辰", "午", "酉", "亥"]:
-        if original_branches.count(annual_branch) >= 2:
-            if annual_branch + "自刑" not in results:
-                results.append(annual_branch + "自刑")
     return results
 
 # 流年地支半合
