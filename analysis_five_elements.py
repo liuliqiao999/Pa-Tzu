@@ -298,24 +298,23 @@ def relation_strength(four_pillars):
 # 主勢佔三者總力量至少 50%，才判定具體從格
 # 若不具備從弱條件返回 None；具備但主勢不明確返回空 list
 def weak_following_type(four_pillars):
+    # 不符合從弱條件
     if not weak_following_structure(four_pillars):
         return None
-    types = []
-    strengths = relation_strength(four_pillars)
-    indexes = [0, 3, 4]
-    string_type = ["從官殺", "從兒", "從財"]
-    total = sum(strengths[i] for i in indexes)
-    maximum = max(strengths[i] for i in indexes)
-    # 三種力量全部為 0，無法判定從弱類型
+    strengths = relation_strength(four_pillars)# 五類十神力量：[官殺, 印星, 比劫, 食傷, 財星]
+    # 從弱只考慮官殺、食傷、財星三類
+    candidate_types = {"從官殺": strengths[0],"從兒": strengths[3], "從財": strengths[4]}
+    total = sum(candidate_types.values())
+    # 符合從弱條件，但三類力量均為零
     if total == 0:
-        return None
-    # 主勢不足 50%，無法確定具體從格類型
+        return []
+    maximum = max(candidate_types.values())
+    # 主勢至少佔三類力量總和的 50%, 未達門檻則保留為一般從弱
     if maximum / total < 0.5:
         return []
-    for i in range(len(string_type)):
-        if strengths[indexes[i]] == maximum:
-            types.append(string_type[i])
-    return types
+    # 允許多種力量並列最強
+    return [structure for structure, strength in candidate_types.items() if strength == maximum]
+
 
 ########## 從強 / 專旺初步判斷 ##########
 # 日主極強，且整體明面干支以生扶日主為主，
@@ -341,7 +340,8 @@ def dominant_structure(four_pillars):
     return constant.dominant_structures[index]
     
 ########## 特殊格局 ##########
-# 優先判斷專旺, 其次從強, 再判斷極弱從格, 普通命局返回 None
+
+# 優先判斷專旺，其次從強，再判斷極弱從格, 普通命局返回 None
 def special_structure(four_pillars):
     dominant = dominant_structure(four_pillars)
     if dominant is not None:
@@ -354,7 +354,9 @@ def special_structure(four_pillars):
             return None
         if weak_type:
             return weak_type
-    return ["從弱"]
+        return ["從弱"]
+    return None
+
 
 ########## 喜忌判斷 ##########
 #普通身強  -> 喜洩、耗、剋 （偏強，極強）

@@ -12,11 +12,18 @@ def solar_to_lunar(solar_date):
     return (day.getLunarYear(), day.getLunarMonth(), day.getLunarDay())
 
 ########## 年柱 ##########
-# 得到年份天干地支（年柱，以立春為界）
+# 得到年份天干地支（年柱，以立春的實際時間為界）
 def get_year_gz(solar_date):
-    day = sxtwl.fromSolar(solar_date.year, solar_date.month, solar_date.day)
-    year_gz = day.getYearGZ()
-    return (constant.ten_stems[year_gz.tg], constant.twelve_branches[year_gz.dz])
+    # 只有日期時，暫時以中午 12:00 作為近似時間
+    if not isinstance(solar_date, datetime.datetime):
+        solar_date = datetime.datetime.combine(solar_date, datetime.time(12, 0))
+    # 以立春的實際時間為界
+    year = solar_date.year
+    lichun = get_lichun_datetime(year)
+    if solar_date < lichun:
+        year -= 1
+    index = (year - 4) % 60
+    return (constant.ten_stems[index % 10], constant.twelve_branches[index % 12])
 
 # 年份天干（年干）
 def get_year_stem(solar_date):
@@ -29,9 +36,26 @@ def get_year_branch(solar_date):
 
 ########## 月柱 ##########
 def get_month_branch(solar_date):
-    day = sxtwl.fromSolar(solar_date.year, solar_date.month, solar_date.day)
-    month_gz = day.getMonthGZ()
-    return constant.twelve_branches[month_gz.dz]
+    # 只有日期時，暫時以中午 12:00 作為近似時間
+    if not isinstance(solar_date, datetime.datetime): 
+        solar_date = datetime.datetime.combine(solar_date, datetime.time(12, 0))
+    # 尋找最近一個已經發生的節
+    term_name, _ = get_nearest_solar_term(solar_date, -1, jie_terms)
+    term_month_branches = {
+        "立春": "寅",
+        "驚蟄": "卯",
+        "清明": "辰",
+        "立夏": "巳",
+        "芒種": "午",
+        "小暑": "未",
+        "立秋": "申",
+        "白露": "酉",
+        "寒露": "戌",
+        "立冬": "亥",
+        "大雪": "子",
+        "小寒": "丑"
+    }
+    return term_month_branches[term_name]
 
 ## 當然也可以用constant.ten_stems[month_gz.tg]直接得到月干，但這裡是為了展示五虎遁的計算方法
 # 五虎遁：根據年干和月支計算月干
@@ -136,41 +160,47 @@ def get_hour_stem(birth_date, birth_time, zi_hour_change = True):
     return get_hour_gz(birth_date, birth_time, zi_hour_change)[0]
 
 
-def get_four_pillars(birth_date, birth_time, zi_hour_change = True):
-    return {"year": get_year_gz(birth_date), 
-            "month": get_month_gz(birth_date), 
-            "day": get_day_gz(get_effective_date(birth_date, birth_time,zi_hour_change)),
-            "hour": get_hour_gz(birth_date, birth_time, zi_hour_change)}
+def get_four_pillars(birth_date, birth_time, zi_hour_change=True):
+    birth_datetime = datetime.datetime.combine(birth_date, birth_time)
+    return {
+        "year": get_year_gz(birth_datetime),
+        "month": get_month_gz(birth_datetime),
+        "day": get_day_gz(get_effective_date(birth_date, birth_time, zi_hour_change)),
+        "hour": get_hour_gz(birth_date, birth_time, zi_hour_change)
+    }
 
-# 二十四節氣（按 sxtwl 索引排列）solar_terms = [constant.solar_terms[(i + 9) % 24]for i in range(24)]
-
+# 二十四節氣（按 sxtwl 索引排列）
+solar_terms = [constant.solar_terms[(i + 21) % 24]for i in range(24)]
 # 十二中氣（按 sxtwl 索引順序）
-qi_terms = [constant.solar_terms[(2 * i + 9) % 24]for i in range(12)]
-
+qi_terms = solar_terms[::2]
 # 十二節（按 sxtwl 索引順序）
-jie_terms = [constant.solar_terms[(2 * i + 10) % 24]for i in range(12)]
+jie_terms = solar_terms[1::2]
 
 
 # 尋找指定時間之前或之後最近的節氣
-def get_nearest_solar_term(target_datetime, direction, terms): # terms：jie_terms、qi_terms 或 constant.solar_terms
+def get_nearest_solar_term(target_datetime, direction, terms):
     if direction not in (1, -1):
-        raise ValueError()
+        raise ValueError("direction 必須為 1 或 -1")
+    if not terms:
+        raise ValueError("節氣列表不可為空")
+    if any(term not in solar_terms for term in terms):
+        raise ValueError("存在無效的節氣名稱")
     current_date = target_datetime.date()
     while True:
         day = sxtwl.fromSolar(current_date.year, current_date.month, current_date.day)
         if day.hasJieQi():
             index = day.getJieQi()
-            term_name = constant.solar_terms[(index + 21) % 24]
+            term_name = solar_terms[index]
             if term_name in terms:
                 jd = day.getJieQiJD()
                 time = sxtwl.JD2DD(jd)
                 # 將儒略日轉換成 datetime
-                term_datetime = datetime.datetime(time.Y,time.M,time.D) + datetime.timedelta(hours=time.h,minutes=time.m,seconds=time.s)
+                term_datetime = datetime.datetime(time.Y, time.M, time.D) + datetime.timedelta(hours=time.h,minutes=time.m,seconds=time.s)
                 # 確認節氣位於指定方向
                 difference = (term_datetime - target_datetime).total_seconds()
                 if difference * direction >= 0:
                     return (term_name, term_datetime)
-        current_date += datetime.timedelta(days = direction)
+        current_date += datetime.timedelta(days=direction)
 
 # 取得指定年份的立春時間
 def get_lichun_datetime(year):

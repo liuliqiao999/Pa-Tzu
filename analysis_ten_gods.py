@@ -1,6 +1,5 @@
 import constant
 import rules
-import analysis_five_elements
 
 ########## /////----------十神基礎分析----------///// ##########
 # 四柱天干十神, 以日干為基準
