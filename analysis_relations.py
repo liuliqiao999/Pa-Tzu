@@ -5,7 +5,6 @@ pillars = ["year", "month", "day", "hour"]
 
 def analyse_stem_combinations(four_pillars):
     # 分析天干五合, 返回：(柱位1, 柱位2, 合化五行)
-    
     results = []
     for pillar_a, pillar_b in combinations(pillars, 2):
         stem_a = four_pillars[pillar_a][0]
@@ -94,5 +93,4 @@ def analyse_branch_punishments(four_pillars):
         related_pillars.append(punishment)
         results.append(tuple(related_pillars))
     return results
-
 
