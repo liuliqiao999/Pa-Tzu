@@ -1,6 +1,5 @@
 import constant
 import rules
-import analysis_five_elements
 import analysis_relations
 from itertools import combinations
 
@@ -12,12 +11,10 @@ def combination_stem_distance(pillar_a, pillar_b):
     index_b = pillars.index(pillar_b)
     return abs(index_a - index_b) - 1
 
-
 # 地支合局的預設優先級, 三會 > 三合 > 六合 僅用於重疊合局的排序，不代表必然合化成功
 def combination_branch_priority(combination_type):
     priorities = {"地支三會": 3, "地支三合": 2, "地支六合": 1}
     return priorities.get(combination_type, 0)
-
 
 # 綜合評估化神條件
 def combination_condition_status(seasonal_state, exposed, rooted, obstructed):
@@ -90,7 +87,6 @@ def combination_stem_five_restrained(four_pillars):
         results.append((pillar_a, pillar_b, element, restrained))
     return results
 
-
 # 判斷地支合局是否受到其他地支六沖, 返回是否存在外部地支沖擊合局
 def combination_branch_clashed(four_pillars, combined_pillars): # combined_pillars：參與合局的柱位
     for pillar in combined_pillars:
@@ -135,8 +131,7 @@ def combination_branch_conditions(four_pillars, combined_pillars, element):
         "受沖": clashed
     }# 返回：月令狀態、是否透干、是否通根、是否受外部六沖
 
-# 天干五合的化神條件
-# 返回每組五合的月令、透干、通根、受剋情況
+# 天干五合的化神條件, 返回每組五合的月令, 透干, 通根, 受剋情況
 def combination_stem_conditions(four_pillars):
     results = []
     exposed_results = combination_stem_five_exposed(four_pillars)
