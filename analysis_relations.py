@@ -80,17 +80,18 @@ def analyse_branch_three_meetings(four_pillars):
     return results
 
 def analyse_branch_punishments(four_pillars):
-    # 分析地支刑，返回相刑柱位及相刑組合
     branches = [four_pillars[pillar][1] for pillar in pillars]
     punishments = rules.branch_punishment(branches)
     results = []
     for punishment in punishments:
-        related_pillars = []
-        for pillar in pillars:
-            branch = four_pillars[pillar][1]
-            if branch in punishment:
-                related_pillars.append(pillar)
-        related_pillars.append(punishment)
-        results.append(tuple(related_pillars))
+        if punishment.endswith("自刑"):
+            target = [punishment[0]] * 2
+        else:
+            target = list(punishment)
+        for positions in combinations(pillars, len(target)):
+            selected = [four_pillars[pillar][1] for pillar in positions]
+            if sorted(selected) == sorted(target):
+                results.append((*positions, punishment))
     return results
+
 
