@@ -170,7 +170,7 @@ def get_four_pillars(birth_date, birth_time, zi_hour_change=True):
     }
 
 # 二十四節氣（按 sxtwl 索引排列）
-solar_terms = [constant.solar_terms[(i + 21) % 24]for i in range(24)]
+solar_terms = [constant.solar_terms[(i - 3) % 24] for i in range(24)]
 # 十二中氣（按 sxtwl 索引順序）
 qi_terms = solar_terms[::2]
 # 十二節（按 sxtwl 索引順序）
